@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 // use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
+use Carbon\Carbon;
+
 
 
 class NewsController extends Controller
@@ -53,13 +55,15 @@ class NewsController extends Controller
             'title' => 'required',
             'author' => 'required',
             'description' => 'required',
-            'content' =>  'text|required',
+            'content' =>  'required',
             'url' => 'required',
             'url_image' => 'required',
-            'published_at' => 'datetime|required',
+            'published_at' => 'date|required',
             'category' => 'required',
             // 'timestamp' => 'timestamp|required',
         ]);
+
+        $validateData['published_at'] = Carbon::now();
 
         # menggunakan News dengan eloquent create untuk insert data
         $news = News::create($validateData);
@@ -126,7 +130,6 @@ class NewsController extends Controller
                 'url_image' => $request->url_image ?? $news->url_image,
                 'published_at' => $request->published_at ?? $news->published_at,
                 'category' => $request->category ?? $news->category,
-                'timestamp' => $request->timestamp ?? $news->timestamp
             ];
 
             # mengupdate data
